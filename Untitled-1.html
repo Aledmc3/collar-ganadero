@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Collar Inteligente - Perfil Animal</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --verde: #2D6A4F;
+    --verde-claro: #52B788;
+    --verde-pastel: #D8F3DC;
+    --tierra: #8B5E3C;
+    --crema: #F8F4EF;
+    --gris: #6B7280;
+    --rojo: #DC2626;
+    --amarillo: #F59E0B;
+    --blanco: #ffffff;
+    --sombra: 0 4px 24px rgba(45,106,79,0.10);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--crema);
+    min-height: 100vh;
+    color: #1a1a1a;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--verde);
+    color: white;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .header-inner {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 32px 24px 28px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .header-icon {
+    width: 56px; height: 56px;
+    background: var(--verde-claro);
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px;
+    flex-shrink: 0;
+  }
+  .header-text h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+  }
+  .header-text p {
+    font-size: 0.85rem;
+    opacity: 0.75;
+    margin-top: 2px;
+  }
+  .header-bg {
+    position: absolute; right: -30px; top: -30px;
+    width: 160px; height: 160px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+  }
+
+  /* MAIN */
+  main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 28px 16px 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  /* CARD */
+  .card {
+    background: white;
+    border-radius: 18px;
+    box-shadow: var(--sombra);
+    overflow: hidden;
+  }
+  .card-header {
+    background: var(--verde-pastel);
+    padding: 14px 22px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid #B7E4C7;
+  }
+  .card-header span.icon { font-size: 1.2rem; }
+  .card-header h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--verde);
+  }
+  .card-body { padding: 20px 22px; }
+
+  /* GRID FIELDS */
+  .fields-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  @media (max-width: 540px) { .fields-grid { grid-template-columns: 1fr; } }
+  .field-full { grid-column: 1 / -1; }
+
+  .field label {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: var(--gris);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin-bottom: 5px;
+  }
+  .field input, .field select, .field textarea {
+    width: 100%;
+    border: 1.5px solid #E5E7EB;
+    border-radius: 10px;
+    padding: 9px 13px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.93rem;
+    color: #1a1a1a;
+    background: #FAFAFA;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    border-color: var(--verde-claro);
+    box-shadow: 0 0 0 3px rgba(82,183,136,0.15);
+    background: white;
+  }
+  .field textarea { resize: vertical; min-height: 70px; }
+
+  /* TABLA VACUNAS / TRATAMIENTOS */
+  .tabla-header {
+    display: grid;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .tabla-vacunas .tabla-header { grid-template-columns: 1fr 1.5fr 1fr; }
+  .tabla-tratamientos .tabla-header { grid-template-columns: 1fr 1.5fr 1.2fr; }
+  .tabla-header span {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--gris);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 0 4px;
+  }
+
+  .tabla-rows { display: flex; flex-direction: column; gap: 8px; }
+
+  .tabla-row {
+    display: grid;
+    gap: 8px;
+    align-items: center;
+    animation: fadeIn 0.25s ease;
+  }
+  .tabla-vacunas .tabla-row { grid-template-columns: 1fr 1.5fr 1fr auto; }
+  .tabla-tratamientos .tabla-row { grid-template-columns: 1fr 1.5fr 1.2fr auto; }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+
+  .tabla-row input {
+    border: 1.5px solid #E5E7EB;
+    border-radius: 8px;
+    padding: 7px 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    background: #FAFAFA;
+    outline: none;
+    width: 100%;
+    transition: border-color 0.2s;
+  }
+  .tabla-row input:focus {
+    border-color: var(--verde-claro);
+    background: white;
+  }
+
+  .btn-eliminar {
+    background: none;
+    border: none;
+    color: #E5E7EB;
+    cursor: pointer;
+    font-size: 1.1rem;
+    padding: 4px;
+    border-radius: 6px;
+    transition: color 0.2s;
+    line-height: 1;
+  }
+  .btn-eliminar:hover { color: var(--rojo); }
+
+  .btn-agregar {
+    margin-top: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--verde-pastel);
+    color: var(--verde);
+    border: none;
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .btn-agregar:hover { background: #B7E4C7; }
+
+  /* ESTADO */
+  .estado-btns {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+  }
+  .estado-btn {
+    padding: 7px 16px;
+    border-radius: 20px;
+    border: 2px solid #E5E7EB;
+    background: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.18s;
+    color: var(--gris);
+  }
+  .estado-btn.activo-verde { border-color: var(--verde-claro); background: var(--verde-pastel); color: var(--verde); }
+  .estado-btn.activo-amarillo { border-color: var(--amarillo); background: #FEF3C7; color: #92400E; }
+  .estado-btn.activo-rojo { border-color: var(--rojo); background: #FEE2E2; color: var(--rojo); }
+
+  /* BOTONES PRINCIPALES */
+  .acciones {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .btn-guardar {
+    flex: 1;
+    min-width: 160px;
+    background: var(--verde);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 14px 20px;
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .btn-guardar:hover { background: #1B4332; transform: translateY(-1px); }
+  .btn-guardar:active { transform: translateY(0); }
+
+  .btn-imprimir {
+    background: white;
+    color: var(--verde);
+    border: 2px solid var(--verde);
+    border-radius: 12px;
+    padding: 14px 20px;
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn-imprimir:hover { background: var(--verde-pastel); }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--verde);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* CHIP ID */
+  .chip-id {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--verde);
+    color: white;
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-bottom: 16px;
+  }
+
+  .divider {
+    height: 1px;
+    background: #F0F0F0;
+    margin: 16px 0;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-bg"></div>
+  <div class="header-inner">
+    <div class="header-icon">🐄</div>
+    <div class="header-text">
+      <h1>Collar Inteligente Ganadero</h1>
+      <p>Registro sanitario y de seguimiento del animal</p>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- SECCIÓN 1: DATOS DEL ANIMAL -->
+  <div class="card">
+    <div class="card-header">
+      <span class="icon">🐮</span>
+      <h2>Datos del Animal</h2>
+    </div>
+    <div class="card-body">
+      <div class="chip-id">🏷️ ID Collar: <span id="collar-id">--</span></div>
+      <div class="fields-grid">
+        <div class="field">
+          <label>Nombre / Apodo</label>
+          <input type="text" id="nombre" placeholder="Ej: Bessie">
+        </div>
+        <div class="field">
+          <label>Número de Animal</label>
+          <input type="text" id="numero" placeholder="Ej: 001">
+        </div>
+        <div class="field">
+          <label>Fecha de Nacimiento</label>
+          <input type="date" id="nacimiento">
+        </div>
+        <div class="field">
+          <label>Sexo</label>
+          <select id="sexo">
+            <option value="">Seleccionar...</option>
+            <option>Hembra</option>
+            <option>Macho</option>
+            <option>Castrado</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Raza</label>
+          <input type="text" id="raza" placeholder="Ej: Hereford, Angus...">
+        </div>
+        <div class="field">
+          <label>Peso (kg)</label>
+          <input type="number" id="peso" placeholder="Ej: 350">
+        </div>
+        <div class="field field-full">
+          <label>Estado de Salud</label>
+          <div class="estado-btns">
+            <button class="estado-btn activo-verde" onclick="setEstado(this, 'activo-verde')">✅ Saludable</button>
+            <button class="estado-btn" onclick="setEstado(this, 'activo-amarillo')">⚠️ En observación</button>
+            <button class="estado-btn" onclick="setEstado(this, 'activo-rojo')">🚨 En tratamiento</button>
+          </div>
+        </div>
+        <div class="field field-full">
+          <label>Observaciones generales</label>
+          <textarea id="observaciones" placeholder="Notas sobre el animal..."></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 2: DATOS DEL PRODUCTOR -->
+  <div class="card">
+    <div class="card-header">
+      <span class="icon">👨‍🌾</span>
+      <h2>Datos del Productor</h2>
+    </div>
+    <div class="card-body">
+      <div class="fields-grid">
+        <div class="field">
+          <label>Nombre del Productor</label>
+          <input type="text" id="productor" placeholder="Nombre completo">
+        </div>
+        <div class="field">
+          <label>Teléfono</label>
+          <input type="tel" id="telefono" placeholder="Ej: +54 9 11...">
+        </div>
+        <div class="field">
+          <label>Nombre del Campo</label>
+          <input type="text" id="campo" placeholder="Ej: La Esperanza">
+        </div>
+        <div class="field">
+          <label>Ubicación / Localidad</label>
+          <input type="text" id="ubicacion" placeholder="Ej: Córdoba, Argentina">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 3: VACUNAS -->
+  <div class="card">
+    <div class="card-header">
+      <span class="icon">💉</span>
+      <h2>Historial de Vacunas</h2>
+    </div>
+    <div class="card-body">
+      <div class="tabla-vacunas">
+        <div class="tabla-header">
+          <span>Fecha</span>
+          <span>Vacuna</span>
+          <span>Próxima dosis</span>
+          <span></span>
+        </div>
+        <div class="tabla-rows" id="rows-vacunas"></div>
+      </div>
+      <button class="btn-agregar" onclick="agregarFila('vacunas')">＋ Agregar vacuna</button>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 4: TRATAMIENTOS -->
+  <div class="card">
+    <div class="card-header">
+      <span class="icon">🩺</span>
+      <h2>Tratamientos y Enfermedades</h2>
+    </div>
+    <div class="card-body">
+      <div class="tabla-tratamientos">
+        <div class="tabla-header">
+          <span>Fecha</span>
+          <span>Descripción</span>
+          <span>Medicamento</span>
+          <span></span>
+        </div>
+        <div class="tabla-rows" id="rows-tratamientos"></div>
+      </div>
+      <button class="btn-agregar" onclick="agregarFila('tratamientos')">＋ Agregar tratamiento</button>
+    </div>
+  </div>
+
+  <!-- ACCIONES -->
+  <div class="acciones">
+    <button class="btn-guardar" onclick="guardar()">💾 Guardar Perfil</button>
+    <button class="btn-imprimir" onclick="window.print()">🖨️ Imprimir</button>
+  </div>
+
+</main>
+
+<div class="toast" id="toast">✅ Perfil guardado correctamente</div>
+
+<script>
+  // Generar ID de collar único
+  function generarID() {
+    const stored = localStorage.getItem('collar_id');
+    if (stored) return stored;
+    const id = 'COL-' + Math.random().toString(36).substring(2,7).toUpperCase();
+    localStorage.setItem('collar_id', id);
+    return id;
+  }
+  document.getElementById('collar-id').textContent = generarID();
+
+  // Estado de salud
+  let estadoActual = 'Saludable';
+  function setEstado(btn, clase) {
+    document.querySelectorAll('.estado-btn').forEach(b => b.className = 'estado-btn');
+    btn.classList.add(clase);
+    estadoActual = btn.textContent.trim();
+  }
+
+  // Agregar fila vacunas/tratamientos
+  function agregarFila(tipo) {
+    const container = document.getElementById('rows-' + tipo);
+    const row = document.createElement('div');
+    row.className = 'tabla-row';
+    if (tipo === 'vacunas') {
+      row.innerHTML = `
+        <input type="date">
+        <input type="text" placeholder="Nombre de la vacuna">
+        <input type="date">
+        <button class="btn-eliminar" onclick="this.parentElement.remove()">✕</button>
+      `;
+    } else {
+      row.innerHTML = `
+        <input type="date">
+        <input type="text" placeholder="Descripción">
+        <input type="text" placeholder="Medicamento">
+        <button class="btn-eliminar" onclick="this.parentElement.remove()">✕</button>
+      `;
+    }
+    container.appendChild(row);
+  }
+
+  // Guardar en localStorage
+  function guardar() {
+    const datos = {
+      collar_id: document.getElementById('collar-id').textContent,
+      nombre: document.getElementById('nombre').value,
+      numero: document.getElementById('numero').value,
+      nacimiento: document.getElementById('nacimiento').value,
+      sexo: document.getElementById('sexo').value,
+      raza: document.getElementById('raza').value,
+      peso: document.getElementById('peso').value,
+      estado: estadoActual,
+      observaciones: document.getElementById('observaciones').value,
+      productor: document.getElementById('productor').value,
+      telefono: document.getElementById('telefono').value,
+      campo: document.getElementById('campo').value,
+      ubicacion: document.getElementById('ubicacion').value,
+    };
+    localStorage.setItem('perfil_animal', JSON.stringify(datos));
+    mostrarToast();
+  }
+
+  // Cargar datos guardados
+  function cargarDatos() {
+    const datos = localStorage.getItem('perfil_animal');
+    if (!datos) return;
+    const d = JSON.parse(datos);
+    document.getElementById('nombre').value = d.nombre || '';
+    document.getElementById('numero').value = d.numero || '';
+    document.getElementById('nacimiento').value = d.nacimiento || '';
+    document.getElementById('sexo').value = d.sexo || '';
+    document.getElementById('raza').value = d.raza || '';
+    document.getElementById('peso').value = d.peso || '';
+    document.getElementById('observaciones').value = d.observaciones || '';
+    document.getElementById('productor').value = d.productor || '';
+    document.getElementById('telefono').value = d.telefono || '';
+    document.getElementById('campo').value = d.campo || '';
+    document.getElementById('ubicacion').value = d.ubicacion || '';
+  }
+  cargarDatos();
+
+  // Toast
+  function mostrarToast() {
+    const t = document.getElementById('toast');
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2800);
+  }
+
+  // Agregar filas iniciales vacías
+  agregarFila('vacunas');
+  agregarFila('tratamientos');
+</script>
+</body>
+</html>
